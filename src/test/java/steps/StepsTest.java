@@ -1,10 +1,12 @@
 package steps;
 
 import conexaoBancoDeDados.DatabaseConnectionsTest;
+import conexaoBancoDeDados.DatabaseConnectionsTestDivide;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.restassured.response.Response;
 import org.example.Endpoints;
+import org.example.EndpointsDivide;
 import org.junit.Assert;
 
 import javax.xml.soap.SOAPException;
@@ -21,11 +23,15 @@ public class StepsTest {
     List<String> localName;
     List<String> localPart;
     List<String> textNode;
+    List<String> localPart2;
+    List<String> textNode2;
     List<String> resposta;
     DatabaseConnectionsTest conexao;
+    DatabaseConnectionsTestDivide conexaoDivide;
 
     public StepsTest() throws IOException {
         conexao = new DatabaseConnectionsTest();
+        conexaoDivide = new DatabaseConnectionsTestDivide();
     }
 
     //CT001
@@ -91,5 +97,31 @@ public class StepsTest {
         response.then().log().all()
                 .assertThat().statusCode(200)
                 .body(containsString(resposta.get(2)));
+    }
+
+    //CT004
+    @Dado("enviar a requisicao divide")
+    public void enviarARequisicaoDivide() throws SOAPException {
+        namespaceUri = conexaoDivide.getNamespaceUri();
+        localName = conexaoDivide.getLocalName();
+        localPart = conexaoDivide.getLocalPart();
+        textNode = conexaoDivide.getTextNode();
+        localPart2 = conexaoDivide.getLocalPart2();
+        textNode2 = conexaoDivide.getTextNode2();
+        resposta = conexaoDivide.getResposta();
+
+        for (int i = 0; i < textNode2.size(); i++){
+            response = EndpointsDivide.enviarRequisicaoDivide(namespaceUri.get(i), localName.get(i), localPart.get(i), textNode.get(i),
+                                                                localPart2.get(i), textNode2.get(i));
+        }
+    }
+
+    @Entao("valido a resposta da requisicao divide")
+    public void validoARespostaDaRequisicaoDivide() {
+        for (int i = 0; i < resposta.size(); i++){
+            response.then().log().all()
+                    .assertThat().statusCode(200)
+                    .body(containsString(resposta.get(i)));
+        }
     }
 }
