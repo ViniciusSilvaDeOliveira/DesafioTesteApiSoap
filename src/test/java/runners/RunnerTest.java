@@ -6,9 +6,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "features/cucumberSoap.feature",
+        features = "C:\\Users\\tivin\\Desktop\\Estudos\\EstagioBN\\DesafioTesteApiSoap\\src\\test\\resources\\features\\cucumberSoap.feature",
         glue = "",
-        tags = "@CT001"
+        tags = "@CT002"
 )
 public class RunnerTest {
 }

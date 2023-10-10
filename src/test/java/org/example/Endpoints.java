@@ -38,24 +38,24 @@ public class Endpoints {
 //        return message.toString();
 //    }
 
-    public static String body() throws SOAPException {
+    public static String body(String namespaceUri, String namespacePrefixBanco, String localNameBanco, String localPart, String textNode) throws SOAPException {
         factory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
         message = factory.createMessage();
         SOAPBody body = message.getSOAPBody();
 
         // Namespace e prefixo do elemento principal
-        String namespaceURI = "http://www.dataaccess.com/webservicesserver/";
-        String namespacePrefix = "web";
+        String namespaceURI = namespaceUri;
+        String namespacePrefix = namespacePrefixBanco;
 
         // Nome do elemento principal
-        String localName = "NumberToDollars";
+        String localName = localNameBanco;
         QName bodyName = new QName(namespaceURI, localName, namespacePrefix);
         SOAPBodyElement bodyElement = body.addBodyElement(bodyName);
 
         // Elemento dentro do elemento principal
-        QName name = new QName(namespaceURI, "dNum", namespacePrefix);
+        QName name = new QName(namespaceURI, localPart, namespacePrefix);
         SOAPElement symbol = bodyElement.addChildElement(name);
-        symbol.addTextNode("500");
+        symbol.addTextNode(textNode);
 
         try {
             // Converter a mensagem SOAP para uma string
@@ -69,10 +69,10 @@ public class Endpoints {
         return null;
     }
 
-    public static Response enviarRequisicao() throws SOAPException {
+    public static Response enviarRequisicao(String namespaceUri, String namespacePrefixBanco, String localNameBanco, String localPart, String textNode) throws SOAPException {
         Response response = given()
                     .contentType("text/xml; charset=utf-8")
-                    .body(body())
+                    .body(body(namespaceUri, namespacePrefixBanco, localNameBanco, localPart, textNode))
                 .when()
                     .post("https://www.dataaccess.com/webservicesserver/NumberConversion.wso")
                 .then()

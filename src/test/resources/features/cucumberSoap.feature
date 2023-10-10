@@ -2,11 +2,21 @@
   Funcionalidade: Testar api com SOAP
 
     @CT001
-    Cenario: Number to words
+    Cenario: Number to dollars
       Dado enviar a requisicao
       Entao valido o status da minha resposta
 
     @CT002
-    Cenario: Number to dollars
-      Dado enviar a requisicao dollars
-      Entao valido o status da minha resposta
+    Cenario: Number to words
+      Dado enviar a requisicao words
+      Entao valido a resposta da requisicao
+
+    @CT003
+    Cenario: Add
+      Dado enviar a requisicao add
+      Entao valido a resposta da requisicao add
+
+    @CT004
+    Cenario: Divide
+      Dado enviar a requisicao divide
+      Entao valido a resposta da requisicao divide
