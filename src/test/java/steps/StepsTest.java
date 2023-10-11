@@ -2,11 +2,13 @@ package steps;
 
 import conexaoBancoDeDados.DatabaseConnectionsTest;
 import conexaoBancoDeDados.DatabaseConnectionsTestDivide;
+import conexaoBancoDeDados.DatabaseConnectionsTestMultiply;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.restassured.response.Response;
 import org.example.Endpoints;
 import org.example.EndpointsDivide;
+import org.example.EndpointsMultiply;
 import org.junit.Assert;
 
 import javax.xml.soap.SOAPException;
@@ -28,10 +30,12 @@ public class StepsTest {
     List<String> resposta;
     DatabaseConnectionsTest conexao;
     DatabaseConnectionsTestDivide conexaoDivide;
+    DatabaseConnectionsTestMultiply conexaoMultiply;
 
     public StepsTest() throws IOException {
         conexao = new DatabaseConnectionsTest();
         conexaoDivide = new DatabaseConnectionsTestDivide();
+        conexaoMultiply = new DatabaseConnectionsTestMultiply();
     }
 
     //CT001
@@ -123,5 +127,37 @@ public class StepsTest {
                     .assertThat().statusCode(200)
                     .body(containsString(resposta.get(i)));
         }
+    }
+
+    //CT005
+    @Dado("enviar a requisicao multiply")
+    public void enviarARequisicaoMultiply() throws SOAPException {
+        namespaceUri = conexaoMultiply.getNamespaceUri();
+        localName = conexaoMultiply.getLocalName();
+        localPart = conexaoMultiply.getLocalPart();
+        textNode = conexaoMultiply.getTextNode();
+        localPart2 = conexaoMultiply.getLocalPart2();
+        textNode2 = conexaoMultiply.getTextNode2();
+        resposta = conexaoMultiply.getResposta();
+
+        for (int i = 0; i < textNode2.size(); i++){
+            response = EndpointsMultiply.enviarRequisicaoMultiply(namespaceUri.get(i), localName.get(i), localPart.get(i), textNode.get(i),
+                    localPart2.get(i), textNode2.get(i));
+        }
+    }
+
+    @Entao("valido a resposta da requisicao multiply")
+    public void validoARespostaDaRequisicaoMultiply() {
+        for (int i = 0; i < resposta.size(); i++){
+            response.then().log().all()
+                    .assertThat().statusCode(200)
+                    .body(containsString(resposta.get(i)));
+        }
+    }
+
+    //CT006
+    @Dado("enviar a requisicao Subtract")
+    public void enviarARequisicaoSubtract() {
+
     }
 }

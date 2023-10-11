@@ -20,3 +20,13 @@
     Cenario: Divide
       Dado enviar a requisicao divide
       Entao valido a resposta da requisicao divide
+
+    @CT005
+    Cenario: Multiply
+      Dado enviar a requisicao multiply
+      Entao valido a resposta da requisicao multiply
+
+    @CT006
+    Cenario: Subtract
+      Dado enviar a requisicao Subtract
+      Entao valido a resposta da requisicao Subtract
