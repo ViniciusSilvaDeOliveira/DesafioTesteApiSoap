@@ -3,12 +3,14 @@ package steps;
 import conexaoBancoDeDados.DatabaseConnectionsTest;
 import conexaoBancoDeDados.DatabaseConnectionsTestDivide;
 import conexaoBancoDeDados.DatabaseConnectionsTestMultiply;
+import conexaoBancoDeDados.DatabaseConnectionsTestSubtract;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.restassured.response.Response;
 import org.example.Endpoints;
 import org.example.EndpointsDivide;
 import org.example.EndpointsMultiply;
+import org.example.EndpointsSubtract;
 import org.junit.Assert;
 
 import javax.xml.soap.SOAPException;
@@ -31,11 +33,13 @@ public class StepsTest {
     DatabaseConnectionsTest conexao;
     DatabaseConnectionsTestDivide conexaoDivide;
     DatabaseConnectionsTestMultiply conexaoMultiply;
+    DatabaseConnectionsTestSubtract conexaoSubtract;
 
     public StepsTest() throws IOException {
         conexao = new DatabaseConnectionsTest();
         conexaoDivide = new DatabaseConnectionsTestDivide();
         conexaoMultiply = new DatabaseConnectionsTestMultiply();
+        conexaoSubtract = new DatabaseConnectionsTestSubtract();
     }
 
     //CT001
@@ -157,7 +161,27 @@ public class StepsTest {
 
     //CT006
     @Dado("enviar a requisicao Subtract")
-    public void enviarARequisicaoSubtract() {
+    public void enviarARequisicaoSubtract() throws SOAPException {
+        namespaceUri = conexaoSubtract.getNamespaceUri();
+        localName = conexaoSubtract.getLocalName();
+        localPart = conexaoSubtract.getLocalPart();
+        textNode = conexaoSubtract.getTextNode();
+        localPart2 = conexaoSubtract.getLocalPart2();
+        textNode2 = conexaoSubtract.getTextNode2();
+        resposta = conexaoSubtract.getResposta();
 
+        for (int i = 0; i < textNode2.size(); i++){
+            response = EndpointsSubtract.enviarRequisicaoSubtract(namespaceUri.get(i), localName.get(i), localPart.get(i),
+                                                                    textNode.get(i), localPart2.get(i), textNode2.get(i));
+        }
+    }
+
+    @Entao("valido a resposta da requisicao Subtract")
+    public void validoARespostaDaRequisicaoSubtract() {
+        for (int i = 0; i < resposta.size(); i++){
+            response.then().log().all()
+                    .assertThat().statusCode(200)
+                    .body(containsString(resposta.get(i)));
+        }
     }
 }

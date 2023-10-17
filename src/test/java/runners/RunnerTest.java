@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "C:\\Users\\tivin\\Desktop\\Estudos\\EstagioBN\\DesafioTesteApiSoap\\src\\test\\resources\\features\\cucumberSoap.feature",
         glue = "",
-        tags = "@CT005"
+        tags = "@CT006"
 )
 public class RunnerTest {
 }
