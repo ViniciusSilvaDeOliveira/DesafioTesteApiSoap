@@ -1,16 +1,10 @@
 package steps;
 
-import conexaoBancoDeDados.DatabaseConnectionsTest;
-import conexaoBancoDeDados.DatabaseConnectionsTestDivide;
-import conexaoBancoDeDados.DatabaseConnectionsTestMultiply;
-import conexaoBancoDeDados.DatabaseConnectionsTestSubtract;
+import conexaoBancoDeDados.*;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.restassured.response.Response;
-import org.example.Endpoints;
-import org.example.EndpointsDivide;
-import org.example.EndpointsMultiply;
-import org.example.EndpointsSubtract;
+import org.example.*;
 import org.junit.Assert;
 
 import javax.xml.soap.SOAPException;
@@ -34,12 +28,14 @@ public class StepsTest {
     DatabaseConnectionsTestDivide conexaoDivide;
     DatabaseConnectionsTestMultiply conexaoMultiply;
     DatabaseConnectionsTestSubtract conexaoSubtract;
+    DatabaseConnectionsTestContinentes conexaoContinentes;
 
     public StepsTest() throws IOException {
         conexao = new DatabaseConnectionsTest();
         conexaoDivide = new DatabaseConnectionsTestDivide();
         conexaoMultiply = new DatabaseConnectionsTestMultiply();
         conexaoSubtract = new DatabaseConnectionsTestSubtract();
+        conexaoContinentes = new DatabaseConnectionsTestContinentes();
     }
 
     //CT001
@@ -183,5 +179,23 @@ public class StepsTest {
                     .assertThat().statusCode(200)
                     .body(containsString(resposta.get(i)));
         }
+    }
+
+    //CT007
+    @Dado("enviar a requisicao continents")
+    public void enviarARequisicaoContinents() throws SOAPException {
+        namespaceUri = conexaoContinentes.getNamespaceUri();
+        localName = conexaoContinentes.getLocalName();
+
+        for (int i = 0; i < localName.size(); i++){
+            response = EndpointsContinents.enviarRequisicaoContinents(namespaceUri.get(i), localName.get(i));
+        }
+    }
+
+    @Entao("valido a resposta da requisicao continents")
+    public void validoARespostaDaRequisicaoContinents() {
+        response.then().log().all()
+                .assertThat().statusCode(200)
+                .body(containsString("Africa"));
     }
 }

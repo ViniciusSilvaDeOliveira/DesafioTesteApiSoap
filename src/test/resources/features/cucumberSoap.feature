@@ -30,3 +30,8 @@
     Cenario: Subtract
       Dado enviar a requisicao Subtract
       Entao valido a resposta da requisicao Subtract
+
+    @CT007
+    Cenario: List of Continents by Name
+      Dado enviar a requisicao continents
+      Entao valido a resposta da requisicao continents

@@ -51,7 +51,6 @@ public class EndpointsSubtract {
     public static Response enviarRequisicaoSubtract(String namespaceUri, String localNameBanco,
                                                     String localPart, String textNode, String localPart2,
                                                     String textNode2) throws SOAPException {
-
         Response response = given()
                     .contentType("text/xml; charset=utf-8")
                     .body(bodySubtract(namespaceUri, localNameBanco, localPart, textNode, localPart2, textNode2))
